@@ -3,14 +3,16 @@ import {
   Box,
   Button,
   Divider,
+  Form,
   Icon,
   InlineStack,
+  Select,
   Text,
   reactExtension,
   useApi,
 } from "@shopify/ui-extensions-react/admin";
 import { useEffect, useMemo, useState } from "react";
-import { getIssues } from "./utils";
+import { getIssues, updateIssues } from "./utils";
 
 // The target used here must match the target used in the extension's .toml file at ./shopify.extension.toml
 const TARGET = "admin.product-details.block.render";
@@ -22,6 +24,7 @@ const PAGE_SIZE = 5;
 function App() {
   const { data, i18n } = useApi(TARGET);
   const [loading, setLoading] = useState(true);
+  const [initialValues, setInitialValues] = useState([]);
   const [issues, setIssues] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -39,10 +42,49 @@ function App() {
         const parsedIssues = JSON.parse(
           productData.data.product.metafield.value
         );
+        setInitialValues(
+          parsedIssues.map(({ completed }) => Boolean(completed))
+        );
         setIssues(parsedIssues);
       }
     })();
   }, []);
+
+  const handleDelete = async (id) => {
+    // Create a new array of issues, leaving out the one that you're deleting
+    const newIssues = issues.filter((issue) => issue.id !== id);
+    // Save to the local state
+    setIssues(newIssues);
+    // Commit changes to the database
+    await updateIssues(productId, newIssues);
+  };
+
+  const handleChange = async (id, value) => {
+    // Update the local state of the extension to reflect changes
+    setIssues((currentIssues) => {
+      // Create a copy of the array so that you don't mistakenly mutate the state
+      const newIssues = [...currentIssues];
+      // Find the index of the issue that you're interested in
+      const editingIssueIndex = newIssues.findIndex(
+        (listIssue) => listIssue.id == id
+      );
+      // Overwrite that item with the new value
+      newIssues[editingIssueIndex] = {
+        // Spread the previous item to retain the values that you're not changing
+        ...newIssues[editingIssueIndex],
+        // Update the completed value
+        completed: value === "completed" ? true : false,
+      };
+      return newIssues;
+    });
+  };
+
+  const onSubmit = async () => {
+    // Commit changes to the database
+    await updateIssues(productId, issues);
+  };
+
+  const onReset = () => {};
 
   const paginatedIssues = useMemo(() => {
     if (issuesCount <= PAGE_SIZE) {
@@ -70,70 +112,97 @@ function App() {
       // It's best UX practice to set an empty summary when there's no data
       summary={summary}
     >
-      {issues.length ? (
-        <>
-          {paginatedIssues.map(
-            ({ id, title, description, completed }, index) => {
-              return (
-                <>
-                  {index > 0 && <Divider />}
-                  <Box key={id} padding="base small">
-                    <InlineStack
-                      blockAlignment="center"
-                      inlineSize="100%"
-                      gap="large"
-                    >
-                      <Box inlineSize="78%">
-                        <Box inlineSize="100%">
-                          <Text fontWeight="bold">{title}</Text>
-                        </Box>
+      <Form id={`issues-form`} onSubmit={onSubmit} onReset={onReset}>
+        {issues.length ? (
+          <>
+            {paginatedIssues.map(
+              ({ id, title, description, completed }, index) => {
+                return (
+                  <>
+                    {index > 0 && <Divider />}
+                    <Box key={id} padding="base small">
+                      <InlineStack
+                        blockAlignment="center"
+                        inlineSize="100%"
+                        gap="large"
+                      >
+                        <Box inlineSize="53%">
+                          <Box inlineSize="100%">
+                            <Text fontWeight="bold">{title}</Text>
+                          </Box>
 
-                        <Box inlineSize="100%">
-                          <Text>{truncate(description, 35)}</Text>
+                          <Box inlineSize="100%">
+                            <Text>{truncate(description, 35)}</Text>
+                          </Box>
                         </Box>
-                      </Box>
-                      <Box inlineSize="22%">
-                        {completed ? "completed" : "todo"}
-                      </Box>
-                    </InlineStack>
-                  </Box>
-                </>
-              );
-            }
-          )}
-          <InlineStack
-            paddingBlockStart="large"
-            blockAlignment="center"
-            inlineAlignment="center"
-          >
-            <Button
-              onPress={() => setCurrentPage((prev) => prev - 1)}
-              disabled={currentPage === 1}
-            >
-              <Icon name="ChevronLeftMinor" />
-            </Button>
+                        <Box inlineSize="22%">
+                          <Select
+                            label="Status"
+                            name="status"
+                            defaultValue={
+                              initialValues[index] ? "completed" : "todo"
+                            }
+                            value={completed ? "completed" : "todo"}
+                            onChange={(value) => handleChange(id, value)}
+                            options={[
+                              { label: "Todo", value: "todo" },
+                              {
+                                label: "Completed",
+                                value: "completed",
+                              },
+                            ]}
+                          />
+                        </Box>
+                        <Box inlineSize="25%">
+                          <InlineStack inlineSize="100%" inlineAlignment="end">
+                            <Button
+                              onPress={() => handleDelete(id)}
+                              variant="tertiary"
+                            >
+                              <Icon name="DeleteMinor" />
+                            </Button>
+                          </InlineStack>
+                        </Box>
+                      </InlineStack>
+                    </Box>
+                  </>
+                );
+              }
+            )}
             <InlineStack
-              inlineSize={25}
+              paddingBlockStart="large"
               blockAlignment="center"
               inlineAlignment="center"
             >
-              <Text>{currentPage}</Text>
+              <Button
+                onPress={() => setCurrentPage((prev) => prev - 1)}
+                disabled={currentPage === 1}
+              >
+                <Icon name="ChevronLeftMinor" />
+              </Button>
+              <InlineStack
+                inlineSize={25}
+                blockAlignment="center"
+                inlineAlignment="center"
+              >
+                <Text>{currentPage}</Text>
+              </InlineStack>
+              <Button
+                onPress={() => setCurrentPage((prev) => prev + 1)}
+                disabled={currentPage >= totalPages}
+              >
+                <Icon name="ChevronRightMinor" />
+              </Button>
             </InlineStack>
-            <Button
-              onPress={() => setCurrentPage((prev) => prev + 1)}
-              disabled={currentPage >= totalPages}
-            >
-              <Icon name="ChevronRightMinor" />
-            </Button>
-          </InlineStack>
-        </>
-      ) : (
-        <>
-          <Box paddingBlockEnd="large">
-            <Text fontWeight="bold">No issues for this product</Text>
-          </Box>
-        </>
-      )}
+          </>
+        ) : (
+          <>
+            <Box paddingBlockEnd="large">
+              <Text fontWeight="bold">No issues for this product</Text>
+            </Box>
+          </>
+        )}
+      </Form>
     </AdminBlock>
   );
 }
