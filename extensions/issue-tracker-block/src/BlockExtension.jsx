@@ -53,15 +53,7 @@ function App() {
     })();
   }, []);
 
-  const handleDelete = async (id) => {
-    // Create a new array of issues, leaving out the one that you're deleting
-    const newIssues = issues.filter((issue) => issue.id !== id);
-    // Save to the local state
-    setIssues(newIssues);
-    // Commit changes to the database
-    await updateIssues(productId, newIssues);
-  };
-
+  // [START build-admin-block.add-change-and-delete-handlers]
   const handleChange = async (id, value) => {
     // Update the local state of the extension to reflect changes
     setIssues((currentIssues) => {
@@ -81,6 +73,16 @@ function App() {
       return newIssues;
     });
   };
+
+  const handleDelete = async (id) => {
+    // Create a new array of issues, leaving out the one that you're deleting
+    const newIssues = issues.filter((issue) => issue.id !== id);
+    // Save to the local state
+    setIssues(newIssues);
+    // Commit changes to the database
+    await updateIssues(productId, newIssues);
+  };
+  // [END build-admin-block.add-change-and-delete-handlers]
 
   const onSubmit = async () => {
     // Commit changes to the database
