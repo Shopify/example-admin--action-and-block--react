@@ -4,6 +4,7 @@ node_modules
 /build
 /app/build
 /public/build/
+/extensions/**/dist
 /public/_dev
 /app/public/build
 /prisma/dev.sqlite
