@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+// [START build-admin-action.create-ui.one]
 import {
   reactExtension,
   useApi,
@@ -8,102 +9,76 @@ import {
   TextArea,
   Box,
 } from "@shopify/ui-extensions-react/admin";
+// [END build-admin-action.create-ui.one]
 import { getIssues, updateIssues } from "./utils";
 
+async function getProductInfo(id) {
+  // Get the currently selected or displayed product from the 'data' API
+  const productData = await getIssues(id);
+  if (productData?.data?.product?.metafield?.value) {
+    return JSON.parse(productData.data.product.metafield.value);
+  }
+};
+
+function generateId (allIssues) {
+  if (!allIssues.length) {
+    return 0;
+  }
+  return allIssues[allIssues.length - 1].id + 1;
+};
+
+function validateForm ({title, description}) {
+  return {
+    isValid: Boolean(title) && Boolean(description),
+    errors: {
+      title: !title,
+      description: !description,
+    },
+  };
+};
+
+// [START build-admin-action.create-ui.two]
 // The target used here must match the target used in the extension's .toml file at ./shopify.extension.toml
 const TARGET = "admin.product-details.action.render";
 
 export default reactExtension(TARGET, () => <App />);
-
+// [END build-admin-action.create-ui.two]
 function App() {
-  const { close, data, intents } = useApi(TARGET);
-  const issueId = intents?.launchUrl
-    ? new URL(intents?.launchUrl)?.searchParams?.get("issueId")
-    : null;
-  const [loading, setLoading] = useState(issueId ? true : false);
+  //connect with the extension's APIs
+  const { close, data } = useApi(TARGET);
   const [issue, setIssue] = useState({ title: "", description: "" });
   const [allIssues, setAllIssues] = useState([]);
   const [formErrors, setFormErrors] = useState(null);
-  const { title, description, id } = issue;
-  const isEditing = id !== undefined;
-
+  const { title, description } = issue;
   useEffect(() => {
-    (async function getProductInfo() {
-      // Get the currently selected or displayed product from the 'data' API
-      const productData = await getIssues(data.selected[0].id);
-      setLoading(false);
-      if (productData?.data?.product?.metafield?.value) {
-        setAllIssues(JSON.parse(productData.data.product.metafield.value));
-      }
-    })();
+    getProductInfo(data.selected[0].id).then(setAllIssues);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const generateId = () => {
-    if (!allIssues.length) {
-      return 0;
-    }
-    return allIssues[allIssues.length - 1].id + 1;
-  };
-
-  const validateForm = () => {
-    setFormErrors({
-      title: !title,
-      description: !description,
-    });
-    return Boolean(title) && Boolean(description);
-  };
-
   const onSubmit = useCallback(async () => {
-    if (validateForm()) {
-      const newIssues = [...allIssues];
-      if (isEditing) {
-        // Find the index of the issue that you're editing
-        const editingIssueIndex = newIssues.findIndex(
-          (listIssue) => listIssue.id == issue.id
-        );
-        // Overwrite that issue's title and description with the new ones
-        newIssues[editingIssueIndex] = {
-          ...issue,
-          title,
-          description,
-        };
-      } else {
-        // Add a new issue at the end of the list
-        newIssues.push({
-          id: generateId(),
-          title,
-          description,
-          completed: false,
-        });
-      }
+    const {isValid, errors} = validateForm(issue);
+    setFormErrors(errors);
 
+    if (isValid) {
       // Commit changes to the database
-      await updateIssues(data.selected[0].id, newIssues);
-      // Close the modal
+      await updateIssues(data.selected[0].id, [
+        ...allIssues,
+        {
+          id: generateId(),
+          completed: false,
+          ...issue,
+        }
+      ]);
+      // Close the modal using the 'close' API
       close();
     }
-  }, [issue, setIssue, allIssues, title, description]);
-
-  useEffect(() => {
-    if (issueId) {
-      // If opened from the block extension, you find the issue that's being edited
-      const editingIssue = allIssues.find(({ id }) => `${id}` === issueId);
-      if (editingIssue) {
-        // Set the issue's ID in the state
-        setIssue(editingIssue);
-      }
-    }
-  }, [issueId, allIssues]);
-
-  if (loading) {
-    return <></>;
-  }
-
+  }, [issue, data.selected, allIssues, close]);
+  // [START build-admin-action.create-ui.three]
   return (
     <AdminAction
-      title={isEditing ? "Edit your issue" : "Create an issue"}
+      title="Create an issue"
       primaryAction={
-        <Button onPress={onSubmit}>{isEditing ? "Save" : "Create"}</Button>
+        <Button onPress={onSubmit}>Create</Button>
       }
       secondaryAction={<Button onPress={close}>Cancel</Button>}
     >
@@ -112,6 +87,7 @@ function App() {
         error={formErrors?.title ? "Please enter a title" : undefined}
         onChange={(val) => setIssue((prev) => ({ ...prev, title: val }))}
         label="Title"
+        maxLength={50}
       />
       <Box paddingBlockStart="large">
         <TextArea
@@ -123,8 +99,10 @@ function App() {
             setIssue((prev) => ({ ...prev, description: val }))
           }
           label="Description"
+          maxLength={300}
         />
       </Box>
     </AdminAction>
   );
+  // [END build-admin-action.create-ui.three]
 }

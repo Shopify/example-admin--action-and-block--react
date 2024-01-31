@@ -1,0 +1,29 @@
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+
+name = "Extensions Spin App"
+client_id = "extensions-spin-app-1p-app-key"
+application_url = "https://information-personality-earrings-petroleum.trycloudflare.com"
+embedded = true
+
+[access_scopes]
+# Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
+scopes = "write_products"
+use_legacy_install_flow = true
+
+[auth]
+redirect_urls = [
+  "https://information-personality-earrings-petroleum.trycloudflare.com/auth/callback",
+  "https://information-personality-earrings-petroleum.trycloudflare.com/auth/shopify/callback",
+  "https://information-personality-earrings-petroleum.trycloudflare.com/api/auth/callback",
+  "https://information-personality-earrings-petroleum.trycloudflare.com/.shopify/graphiql/auth/callback"
+]
+
+[webhooks]
+api_version = "2023-01"
+
+[pos]
+embedded = false
+
+[build]
+automatically_update_urls_on_dev = true
+dev_store_url = "development-store-1.shopify.bombom.mitch-lillie.us.spin.dev"
