@@ -8,13 +8,17 @@ import {
   Form,
   Icon,
   InlineStack,
+  ProgressIndicator,
   Select,
   Text,
   reactExtension,
   useApi,
 } from "@shopify/ui-extensions-react/admin";
 // [END build-admin-block.create-ui-one]
+
+// [START build-admin-block.connect-api-one]
 import { getIssues, updateIssues } from "./utils";
+// [END build-admin-block.connect-api-one]
 
 // [START build-admin-block.create-ui-two]
 // The target used here must match the target used in the extension's .toml file at ./shopify.extension.toml
@@ -31,6 +35,7 @@ function App() {
   const [issues, setIssues] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
 
+  // [START build-admin-block.get-initial-data]
   const productId = data.selected[0].id;
   const issuesCount = issues.length;
   const totalPages = issuesCount / PAGE_SIZE;
@@ -52,6 +57,20 @@ function App() {
       }
     })();
   }, []);
+
+  const paginatedIssues = useMemo(() => {
+    if (issuesCount <= PAGE_SIZE) {
+      // It's not necessary to paginate if there are fewer issues than the page size
+      return issues;
+    }
+
+    // Slice the array after the last item of the previous page
+    return [...issues].slice(
+      (currentPage - 1) * PAGE_SIZE,
+      currentPage * PAGE_SIZE
+    );
+  }, [issues, currentPage]);
+  // [END build-admin-block.get-initial-data]
 
   // [START build-admin-block.add-change-and-delete-handlers]
   const handleChange = async (id, value) => {
@@ -91,24 +110,12 @@ function App() {
 
   const onReset = () => {};
 
-  const paginatedIssues = useMemo(() => {
-    if (issuesCount <= PAGE_SIZE) {
-      // It's not necessary to paginate if there are fewer issues than the page size
-      return issues;
-    }
-
-    // Slice the array after the last item of the previous page
-    return [...issues].slice(
-      (currentPage - 1) * PAGE_SIZE,
-      currentPage * PAGE_SIZE
-    );
-  }, [issues, currentPage]);
-
-  if (loading) {
-    return <></>;
-  }
   // [START build-admin-block.create-ui-three]
-  return (
+  return loading ? (
+    <InlineStack blockAlignment='center' inlineAlignment='center'>
+      <ProgressIndicator size="large-100" />
+    </InlineStack>
+  ) : (
     <AdminBlock
       // Translate the block title with the i18n API, which uses the strings in the locale files
       title={i18n.translate("name")}
