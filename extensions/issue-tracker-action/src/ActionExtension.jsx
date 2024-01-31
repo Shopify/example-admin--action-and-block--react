@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-// [START build-admin-action.create-ui.one]
+// [START build-admin-action.create-ui-one]
 import {
   reactExtension,
   useApi,
@@ -9,7 +9,7 @@ import {
   TextArea,
   Box,
 } from "@shopify/ui-extensions-react/admin";
-// [END build-admin-action.create-ui.one]
+// [END build-admin-action.create-ui-one]
 import { getIssues, updateIssues } from "./utils";
 
 async function getProductInfo(id) {
@@ -37,12 +37,12 @@ function validateForm ({title, description}) {
   };
 };
 
-// [START build-admin-action.create-ui.two]
+// [START build-admin-action.create-ui-two]
 // The target used here must match the target used in the extension's .toml file at ./shopify.extension.toml
 const TARGET = "admin.product-details.action.render";
 
 export default reactExtension(TARGET, () => <App />);
-// [END build-admin-action.create-ui.two]
+// [END build-admin-action.create-ui-two]
 function App() {
   //connect with the extension's APIs
   const { close, data } = useApi(TARGET);
@@ -73,7 +73,7 @@ function App() {
       close();
     }
   }, [issue, data.selected, allIssues, close]);
-  // [START build-admin-action.create-ui.three]
+  // [START build-admin-action.create-ui-three]
   return (
     <AdminAction
       title="Create an issue"
@@ -104,5 +104,5 @@ function App() {
       </Box>
     </AdminAction>
   );
-  // [END build-admin-action.create-ui.three]
+  // [END build-admin-action.create-ui-three]
 }
