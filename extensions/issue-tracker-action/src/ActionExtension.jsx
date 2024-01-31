@@ -12,14 +12,6 @@ import {
 // [END build-admin-action.create-ui-one]
 import { getIssues, updateIssues } from "./utils";
 
-async function getProductInfo(id) {
-  // Get the currently selected or displayed product from the 'data' API
-  const productData = await getIssues(id);
-  if (productData?.data?.product?.metafield?.value) {
-    return JSON.parse(productData.data.product.metafield.value);
-  }
-};
-
 function generateId (allIssues) {
   if (!allIssues.length) {
     return 0;
@@ -42,6 +34,7 @@ function validateForm ({title, description}) {
 const TARGET = "admin.product-details.action.render";
 
 export default reactExtension(TARGET, () => <App />);
+
 // [END build-admin-action.create-ui-two]
 function App() {
   //connect with the extension's APIs
@@ -50,11 +43,15 @@ function App() {
   const [allIssues, setAllIssues] = useState([]);
   const [formErrors, setFormErrors] = useState(null);
   const { title, description } = issue;
+
+  // [START build-admin-action.connect-api-one]
   useEffect(() => {
-    getProductInfo(data.selected[0].id).then(setAllIssues);
+    getIssues(data.selected[0].id).then(setAllIssues);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  // [END build-admin-action.connect-api-one]
 
+  // [START build-admin-action.connect-api-two]
   const onSubmit = useCallback(async () => {
     const {isValid, errors} = validateForm(issue);
     setFormErrors(errors);
@@ -73,6 +70,8 @@ function App() {
       close();
     }
   }, [issue, data.selected, allIssues, close]);
+  // [END build-admin-action.connect-api-two]
+
   // [START build-admin-action.create-ui-three]
   return (
     <AdminAction

@@ -30,7 +30,7 @@ export async function updateIssues(id, newIssues) {
 
 export async function getIssues(productId) {
   // This example uses metafields to store the data. For more information, refer to https://shopify.dev/docs/apps/custom-data/metafields.
-  return await makeGraphQLQuery(
+  const res = await makeGraphQLQuery(
     `query Product($id: ID!) {
       product(id: $id) {
         metafield(namespace: "$app:issues", key:"issues") {
@@ -41,6 +41,10 @@ export async function getIssues(productId) {
   `,
     { id: productId }
   );
+
+  if (res?.data?.product?.metafield?.value) {
+    return JSON.parse(res.data.product.metafield.value);
+  }
 }
 
 async function makeGraphQLQuery(query, variables) {
