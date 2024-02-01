@@ -232,7 +232,7 @@ function App() {
             >
               Add your first issue
             </Button>
-            {/* [START connect-block-action.no-issues] */}
+            {/* [END connect-block-action.no-issues] */}
           </>
         )}
       </Form>
