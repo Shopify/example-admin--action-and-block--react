@@ -43,7 +43,7 @@ function App() {
 
   // [START build-admin-action.connect-api-one]
   useEffect(() => {
-    getIssues(data.selected[0].id).then(setAllIssues);
+    getIssues(data.selected[0].id).then(issues => setAllIssues(issues || []));
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   // [END build-admin-action.connect-api-one]

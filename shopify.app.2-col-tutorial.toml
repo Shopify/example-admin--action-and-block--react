@@ -2,7 +2,7 @@
 
 name = "2-col-tutorial"
 client_id = "d66fab1684c5c8564f16c4da4e2b89e8"
-application_url = "https://protocols-clips-first-wb.trycloudflare.com"
+application_url = "https://italian-fat-jam-nm.trycloudflare.com"
 embedded = true
 
 [access_scopes]
@@ -11,10 +11,10 @@ scopes = "write_products"
 
 [auth]
 redirect_urls = [
-  "https://protocols-clips-first-wb.trycloudflare.com/auth/callback",
-  "https://protocols-clips-first-wb.trycloudflare.com/auth/shopify/callback",
-  "https://protocols-clips-first-wb.trycloudflare.com/api/auth/callback",
-  "https://protocols-clips-first-wb.trycloudflare.com/.shopify/graphiql/auth/callback"
+  "https://italian-fat-jam-nm.trycloudflare.com/auth/callback",
+  "https://italian-fat-jam-nm.trycloudflare.com/auth/shopify/callback",
+  "https://italian-fat-jam-nm.trycloudflare.com/api/auth/callback",
+  "https://italian-fat-jam-nm.trycloudflare.com/.shopify/graphiql/auth/callback"
 ]
 
 [webhooks]
