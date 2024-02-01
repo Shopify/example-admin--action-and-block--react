@@ -13,10 +13,7 @@ import {
 import { getIssues, updateIssues } from "./utils";
 
 function generateId (allIssues) {
-  if (!allIssues.length) {
-    return 0;
-  }
-  return allIssues[allIssues.length - 1].id + 1;
+  return !allIssues?.length ? 0 : allIssues[allIssues.length - 1].id + 1;
 };
 
 function validateForm ({title, description}) {

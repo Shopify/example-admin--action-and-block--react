@@ -41,7 +41,7 @@ export async function getIssues(productId) {
   `,
     { id: productId }
   );
-
+  console.log({ productId, res });
   if (res?.data?.product?.metafield?.value) {
     return JSON.parse(res.data.product.metafield.value);
   }

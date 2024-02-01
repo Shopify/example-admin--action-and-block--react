@@ -56,7 +56,7 @@ function App() {
         setIssues(parsedIssues);
       }
     })();
-  }, []);
+  }, [productId]);
 
   const paginatedIssues = useMemo(() => {
     if (issuesCount <= PAGE_SIZE) {
@@ -69,7 +69,7 @@ function App() {
       (currentPage - 1) * PAGE_SIZE,
       currentPage * PAGE_SIZE
     );
-  }, [issues, currentPage]);
+  }, [issuesCount, issues, currentPage]);
   // [END build-admin-block.get-initial-data]
 
   // [START build-admin-block.add-change-and-delete-handlers]
@@ -120,7 +120,8 @@ function App() {
       // Translate the block title with the i18n API, which uses the strings in the locale files
       title={i18n.translate("name")}
     >
-      <Form id={`issues-form`} onSubmit={onSubmit} onReset={onReset}>
+      <Text>Issues</Text>
+      {/* <Form id={`issues-form`} onSubmit={onSubmit} onReset={onReset}>
         {issues.length ? (
           <>
             {paginatedIssues.map(
@@ -210,7 +211,7 @@ function App() {
             </Box>
           </>
         )}
-      </Form>
+      </Form> */}
     </AdminBlock>
   );
   // [END build-admin-block.create-ui-three]

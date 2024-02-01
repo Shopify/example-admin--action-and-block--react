@@ -1,0 +1,28 @@
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+
+name = "2-col-tutorial"
+client_id = "d66fab1684c5c8564f16c4da4e2b89e8"
+application_url = "https://nissan-mechanisms-land-teddy.trycloudflare.com"
+embedded = true
+
+[access_scopes]
+# Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
+scopes = "write_products"
+
+[auth]
+redirect_urls = [
+  "https://nissan-mechanisms-land-teddy.trycloudflare.com/auth/callback",
+  "https://nissan-mechanisms-land-teddy.trycloudflare.com/auth/shopify/callback",
+  "https://nissan-mechanisms-land-teddy.trycloudflare.com/api/auth/callback",
+  "https://nissan-mechanisms-land-teddy.trycloudflare.com/.shopify/graphiql/auth/callback"
+]
+
+[webhooks]
+api_version = "2024-01"
+
+[pos]
+embedded = false
+
+[build]
+automatically_update_urls_on_dev = true
+dev_store_url = "elana-dev.myshopify.com"

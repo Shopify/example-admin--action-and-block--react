@@ -1,5 +1,6 @@
 {
   "name": "action-and-block",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "build": "NODE_ENV=production remix build",
@@ -27,7 +28,7 @@
     "@shopify/app-bridge-types": "^0.0.3",
     "@shopify/cli": "3.50.2",
     "@shopify/polaris": "^12.0.0",
-    "@shopify/shopify-api": "^8.0.2",
+    "@shopify/shopify-api": "^9.0.1",
     "@shopify/shopify-app-remix": "^2.1.0",
     "@shopify/shopify-app-session-storage-prisma": "^2.0.0",
     "cross-env": "^7.0.3",
@@ -39,10 +40,6 @@
   "devDependencies": {
     "@remix-run/dev": "^2.0.0",
     "@remix-run/eslint-config": "^2.0.0",
-    "@types/eslint": "^8.40.0",
-    "@types/node": "^20.6.3",
-    "@types/react": "^18.2.31",
-    "@types/react-dom": "^18.2.14",
     "eslint": "^8.42.0",
     "eslint-config-prettier": "^8.8.0",
     "prettier": "^2.8.8",
@@ -54,5 +51,5 @@
   "trustedDependencies": [
     "@shopify/plugin-cloudflare"
   ],
-  "author": "mitch"
+  "author": "Shopify"
 }
