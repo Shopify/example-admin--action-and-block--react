@@ -121,7 +121,7 @@ function App() {
       title={i18n.translate("name")}
     >
       <Text>Issues</Text>
-      {/* <Form id={`issues-form`} onSubmit={onSubmit} onReset={onReset}>
+      <Form id={`issues-form`} onSubmit={onSubmit} onReset={onReset}>
         {issues.length ? (
           <>
             {paginatedIssues.map(
@@ -211,7 +211,7 @@ function App() {
             </Box>
           </>
         )}
-      </Form> */}
+      </Form>
     </AdminBlock>
   );
   // [END build-admin-block.create-ui-three]
