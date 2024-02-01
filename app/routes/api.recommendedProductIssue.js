@@ -1,3 +1,4 @@
+// [START connect-backend.create-route]
 import { json } from "@remix-run/node";
 import { authenticate } from "../shopify.server";
 
@@ -27,3 +28,4 @@ export const loader = async ({ request }) => {
   // Wrap the response in the CORS method so that the extension can access it
   return cors(json({ productIssue: issue }));
 };
+// [END connect-backend.create-route]

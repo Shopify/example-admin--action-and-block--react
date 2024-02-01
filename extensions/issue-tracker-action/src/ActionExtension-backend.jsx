@@ -14,6 +14,23 @@ import {
 } from "@shopify/ui-extensions-react/admin";
 import { getIssues, updateIssues } from "./utils";
 
+function generateId (allIssues) {
+  if (!allIssues.length) {
+    return 0;
+  }
+  return allIssues[allIssues.length - 1].id + 1;
+};
+
+function validateForm ({title, description}) {
+  return {
+    isValid: Boolean(title) && Boolean(description),
+    errors: {
+      title: !title,
+      description: !description,
+    },
+  };
+};
+
 // The target used here must match the target used in the extension's .toml file at ./shopify.ui.extension.toml
 const TARGET = "admin.product-details.action.render";
 
@@ -32,6 +49,7 @@ function App() {
   const { title, description, id } = issue;
   const isEditing = id !== undefined;
 
+
   useEffect(() => {
     (async function getProductInfo() {
       const productData = await getIssues(data.selected[0].id);
@@ -42,6 +60,7 @@ function App() {
     })();
   });
 
+  // [START connect-backend.call-backend]
   const getIssueRecommendation = useCallback(async () => {
     // Get a recommended issue title and description from your app's backend
     setLoadingRecommended(true);
@@ -59,25 +78,14 @@ function App() {
       // If you get an recommendation, then update the title and description fields
       setIssue(json?.productIssue);
     }
-  });
-
-  const generateId = () => {
-    if (!allIssues.length) {
-      return 0;
-    }
-    return allIssues[allIssues.length - 1].id + 1;
-  };
-
-  const validateForm = () => {
-    setFormErrors({
-      title: !Boolean(title),
-      description: !Boolean(description),
-    });
-    return Boolean(title) && Boolean(description);
-  };
+  }, [data.selected]);
+  // [END connect-backend.call-backend]
 
   const onSubmit = useCallback(async () => {
-    if (validateForm()) {
+    const {isValid, errors} = validateForm(issue);
+    setFormErrors(errors);
+
+    if (isValid) {
       const newIssues = [...allIssues];
       if (isEditing) {
         // Find the index of the issue that you're editing
@@ -105,7 +113,7 @@ function App() {
       // Close the modal
       close();
     }
-  }, [issue, setIssue, allIssues, title, description]);
+  }, [allIssues, close, data.selected, description, isEditing, issue, title]);
 
   useEffect(() => {
     if (issueId) {
