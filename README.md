@@ -17,16 +17,23 @@ Running this app with no changes, will start you at the finishing point of [Buil
 
 ### Connected extensions
 
-To run the extensions in the state that they are in at the finishing point of [Connecting the action and block extensions](https://shopify.dev/docs/apps/admin/admin-actions-and-blocks/connect-action-and-block), change the module path in `extensions/issue-tracker-action/shopify.extension.toml` to `./src/ActionExtension-connect.jsx`.
+To run the extensions in the state that they are in at the finishing point of [Connecting the action and block extensions](https://shopify.dev/docs/apps/admin/admin-actions-and-blocks/connect-action-and-block), change the module path value in `extensions/issue-tracker-action/shopify.extension.toml` to `./src/ActionExtension-connect.jsx`.
 
 ```diff
 -module = "./src/ActionExtension.jsx"
 +module = "./src/ActionExtension-connect.jsx"
 ```
 
+Additionally, change the module path value in `extensions/issue-tracker-block/shopify.extension.toml` to `./src/BlockExtension-connect.jsx`.
+
+```diff
+-module = "./src/BlockExtension.jsx"
++module = "./src/BlockExtension-connect.jsx"
+```
+
 ### Connected to the app's backend
 
-To run the extensions in the state that they are in at the finishing point of [Connecting an extension to your app's backend](https://shopify.dev/docs/apps/admin/admin-actions-and-blocks/connect-extension-and-backend), change the module path in `extensions/issue-tracker-action/shopify.extension.toml` to `./src/ActionExtension-backend.jsx`.
+To run the extensions in the state that they are in at the finishing point of [Connecting an extension to your app's backend](https://shopify.dev/docs/apps/admin/admin-actions-and-blocks/connect-extension-and-backend), change the module path value in `extensions/issue-tracker-action/shopify.extension.toml` to `./src/ActionExtension-backend.jsx`.
 
 ```diff
 -module = "./src/ActionExtension.jsx"

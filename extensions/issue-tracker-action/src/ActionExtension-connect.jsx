@@ -11,10 +11,7 @@ import {
 import { getIssues, updateIssues } from "./utils";
 
 function generateId (allIssues) {
-  if (!allIssues.length) {
-    return 0;
-  }
-  return allIssues[allIssues.length - 1].id + 1;
+  return !allIssues?.length ? 0 : allIssues[allIssues.length - 1].id + 1;
 };
 
 function validateForm ({title, description}) {
@@ -49,7 +46,7 @@ function App() {
   useEffect(() => {
     getIssues(data.selected[0].id).then((issues) => {
       setLoading(false);
-      setAllIssues(issues);
+      setAllIssues(issues || []);
     });
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
