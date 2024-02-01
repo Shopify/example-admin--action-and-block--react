@@ -23,7 +23,9 @@ export default reactExtension(TARGET, () => <App />);
 const PAGE_SIZE = 3;
 
 function App() {
-  const { data, i18n } = useApi(TARGET);
+  // [START connect-block-action.nav-api]
+  const { navigation, data, i18n } = useApi(TARGET);
+  // [END connect-block-action.nav-api]
   const [loading, setLoading] = useState(true);
   const [initialValues, setInitialValues] = useState([]);
   const [issues, setIssues] = useState([]);
@@ -151,7 +153,24 @@ function App() {
                           />
                         </Box>
                         <Box inlineSize="25%">
-                          <InlineStack inlineSize="100%" inlineAlignment="end">
+                          {/* [START connect-block-action.edit-button] */}
+                          <InlineStack
+                            inlineSize="100%"
+                            blockAlignment="center"
+                            inlineAlignment="end"
+                            gap="base"
+                          >
+                            <Button
+                              variant="tertiary"
+                              onPress={() =>
+                                navigation?.navigate(
+                                  `extension:issue-tracker-action?issueId=${id}`
+                                )
+                              }
+                            >
+                              <Icon name="EditMinor" />
+                            </Button>
+                            {/* [END connect-block-action.edit-button] */}
                             <Button
                               onPress={() => handleDelete(id)}
                               variant="tertiary"
@@ -166,6 +185,16 @@ function App() {
                 );
               }
             )}
+            {/* [START connect-block-action.create-issue] */}
+            <Divider />
+            <Box paddingBlockStart="base">
+              <Button
+                onPress={() => navigation?.navigate(`extension:issue-tracker-action`)}
+              >
+                Add issue
+              </Button>
+            </Box>
+            {/* [END connect-block-action.create-issue] */}
             <InlineStack
               paddingBlockStart="large"
               blockAlignment="center"
@@ -197,6 +226,13 @@ function App() {
             <Box paddingBlockEnd="large">
               <Text fontWeight="bold">No issues for this product</Text>
             </Box>
+            {/* [START connect-block-action.no-issues] */}
+            <Button
+              onPress={() => navigation?.navigate(`extension:issue-tracker-action`)}
+            >
+              Add your first issue
+            </Button>
+            {/* [START connect-block-action.no-issues] */}
           </>
         )}
       </Form>
