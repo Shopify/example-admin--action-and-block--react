@@ -72,7 +72,7 @@ function App() {
       } else {
         // Add a new issue at the end of the list
         newIssues.push({
-          id: generateId(),
+          id: generateId(allIssues),
           title,
           description,
           completed: false,

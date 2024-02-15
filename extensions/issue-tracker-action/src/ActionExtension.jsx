@@ -58,7 +58,7 @@ function App() {
       await updateIssues(data.selected[0].id, [
         ...allIssues,
         {
-          id: generateId(),
+          id: generateId(allIssues),
           completed: false,
           ...issue,
         }
