@@ -43,19 +43,16 @@ function App() {
   const [issue, setIssue] = useState({ title: "", description: "" });
   const [allIssues, setAllIssues] = useState([]);
   const [formErrors, setFormErrors] = useState(null);
-  const { title, description, id } = issue;
-  const isEditing = id !== undefined;
+  const [isEditing, setIsEditing] = useState(false);
 
 
   useEffect(() => {
-    (async function getProductInfo() {
-      const productData = await getIssues(data.selected[0].id);
+    getIssues(data.selected[0].id).then((issues) => {
       setLoadingInfo(false);
-      if (productData?.data?.product?.metafield?.value) {
-        setAllIssues(JSON.parse(productData.data.product.metafield.value));
-      }
-    })();
-  });
+      setAllIssues(issues || []);
+    });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // [START connect-backend.call-backend]
   const getIssueRecommendation = useCallback(async () => {
@@ -92,15 +89,15 @@ function App() {
         // Overwrite that issue's title and description with the new ones
         newIssues[editingIssueIndex] = {
           ...issue,
-          title,
-          description,
+          title: issue.title,
+          description: issue.description,
         };
       } else {
         // Add a new issue at the end of the list
         newIssues.push({
           id: generateId(allIssues),
-          title,
-          description,
+          title: issue.title,
+          description: issue.description,
           completed: false,
         });
       }
@@ -110,7 +107,7 @@ function App() {
       // Close the modal
       close();
     }
-  }, [allIssues, close, data.selected, description, isEditing, issue, title]);
+  }, [allIssues, close, data.selected, isEditing, issue]);
 
   useEffect(() => {
     if (issueId) {
@@ -119,7 +116,10 @@ function App() {
       if (editingIssue) {
         // Set the issue's ID in the state
         setIssue(editingIssue);
+        setIsEditing(true);
       }
+    } else {
+      setIsEditing(false);
     }
   }, [issueId, allIssues]);
 
@@ -158,14 +158,14 @@ function App() {
         </Banner>
 
         <TextField
-          value={title}
+          value={issue.title}
           error={formErrors?.title ? "Please enter a title" : undefined}
           onChange={(val) => setIssue((prev) => ({ ...prev, title: val }))}
           label="Title"
         />
 
         <TextArea
-          value={description}
+          value={issue.description}
           error={
             formErrors?.description ? "Please enter a description" : undefined
           }
