@@ -1,0 +1,20 @@
+api_version = "2024-04"
+
+[[extensions]]
+# Change the merchant-facing name of the extension in locales/en.default.json
+name = "t:name"
+handle = "admin-print"
+type = "ui_extension"
+
+[[extensions.targeting]]
+module = "./src/PrintActionExtension.jsx"
+# The target used here must match the target used in the module file (./src/PrintActionExtension.tsx)
+target = "admin.order-details.print-action.render"
+
+
+# Valid extension targets:
+
+# - admin.order-details.print-action.render
+# - admin.order-index.selection-print-action.render
+# - admin.product-details.print-action.render
+# - admin.product-index.selection-print-action.render
