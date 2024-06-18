@@ -1,0 +1,15 @@
+{
+  "name": "admin-print",
+  "private": true,
+  "version": "1.0.0",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "react": "^18.0.0",
+    "@shopify/ui-extensions": "unstable",
+    "@shopify/ui-extensions-react": "unstable"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.0",
+    "react-reconciler": "0.29.0"
+  }
+}
