@@ -4,10 +4,13 @@ export async function loader({ request }) {
   // [START build-admin-print-action.print-src-four-a]
   const { cors, admin } = await authenticate.admin(request);
   // [END build-admin-print-action.print-src-four-a]
+  // [START build-admin-print-action.query-params]
   const url = new URL(request.url);
   const query = url.searchParams;
   const docs = query.get("printType").split(",");
   const orderId = query.get("orderId");
+  // [END build-admin-print-action.query-params]
+  // [START build-admin-print-action.graphQL-query]
   const orderDetails = await admin
     .graphql(
       `query getOrder($orderId: ID!) {
@@ -30,9 +33,10 @@ export async function loader({ request }) {
     .json();
 
   const order = orderDetails.data.order;
+  // [END build-admin-print-action.graphQL-query]
+  // [START build-admin-print-action.print-src-four-b]
   const pages = docs.map((x) => orderPage(x, order));
   const print = printHTML(pages);
-  // [START build-admin-print-action.print-src-four-b]
   return cors(
     new Response(print, {
       status: 200,
