@@ -1,8 +1,3 @@
 {
-  "name": "admin-print",
-  "warningTitle": "Titre",
-  "warningBody": "Afficher une bannière d'avertissement lorsque le formulaire est dans un état invalide.",
-  "documents": "Documents",
-  "document1": "Document 1",
-  "document2": "Document 2"
+  "documents": "Documents"
 }
