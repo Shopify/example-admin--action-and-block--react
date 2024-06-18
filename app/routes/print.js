@@ -1,6 +1,7 @@
 import {authenticate} from '../shopify.server';
 
 export async function loader({request}) {
+  const {cors, admin} = await authenticate.admin(request);
   const url = new URL(request.url);
   const query = url.searchParams;
   const docs = query.get("printType").split(',');
@@ -26,7 +27,6 @@ export async function loader({request}) {
   const singlePage = pages.join(pageBreak);
   const printed = printTemplate.replace("BODY", singlePage);
 
-  const {cors} = await authenticate.admin(request);
   return cors(new Response(printed, {
     status: 200,
     headers: {

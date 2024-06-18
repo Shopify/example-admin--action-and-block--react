@@ -1,3 +1,4 @@
+# [START print-action-extension.configuration]
 api_version = "2024-04"
 
 [[extensions]]
@@ -18,3 +19,4 @@ target = "admin.order-details.print-action.render"
 # - admin.order-index.selection-print-action.render
 # - admin.product-details.print-action.render
 # - admin.product-index.selection-print-action.render
+# [END print-action-extension.configuration]

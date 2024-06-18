@@ -1,22 +1,26 @@
+import { useEffect, useState } from "react";
+// [START build-admin-print-action.create-ui-one]
 import {
   reactExtension,
   useApi,
   AdminPrintAction,
-  Banner,
   BlockStack,
   Checkbox,
   Text,
 } from "@shopify/ui-extensions-react/admin";
-import { useEffect, useState } from "react";
+// [END build-admin-print-action.create-ui-one]
 
+// [START build-admin-print-action.create-ui-two]
 // The target used here must match the target used in the extension's toml file (./shopify.extension.toml)
 const TARGET = "admin.order-details.print-action.render";
 
 export default reactExtension(TARGET, () => <App />);
+// [END build-admin-print-action.create-ui-two]
 
 function App() {
   // The useApi hook provides access to several useful APIs like i18n and data.
   const {i18n, data} = useApi(TARGET);
+  // [START build-admin-print-action.set-src] 
   const [src, setSrc] = useState(null);
 
   const [printInvoice, setPrintInvoice] = useState(true);
@@ -38,8 +42,10 @@ function App() {
 
     const fullSrc = `/print?${params.toString()}`;
     setSrc(fullSrc);
-  }, [printInvoice, printPackingSlip]);
+  }, [data.selected, printInvoice, printPackingSlip]);
+  // [END build-admin-print-action.set-src] 
 
+  // [START build-admin-print-action.create-ui-three]
   return (
     <AdminPrintAction src={src}>
       <BlockStack blockGap="base">
@@ -53,4 +59,5 @@ function App() {
       </BlockStack>
     </AdminPrintAction>
   );
+  // [END build-admin-print-action.create-ui-three]
 }
