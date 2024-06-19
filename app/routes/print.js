@@ -33,7 +33,7 @@ export async function loader({ request }) {
   const order = orderDetails.data.order;
   // [END build-admin-print-action.graphQL-query]
   // [START build-admin-print-action.print-src-four-b]
-  const pages = docs.map((x) => orderPage(x, order));
+  const pages = docs.map((docType) => orderPage(docType, order));
   const print = printHTML(pages);
   // [START build-admin-print-action.print-src-four-b]
   return cors(
