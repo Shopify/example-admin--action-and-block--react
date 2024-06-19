@@ -71,7 +71,7 @@ function orderPage(docType, order) {
           </div>
         </div>
         <hr>
-        <p>Order total: ${price}</p>
+        <p>Order total: $${price}</p>
         <p style="margin-bottom: 0;">If you have any questions, please send an email to ${email}</p>
       </div>
     </main>`;
