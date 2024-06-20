@@ -4,12 +4,14 @@ export async function loader({ request }) {
   // [START build-admin-print-action.print-src-four-a]
   const { cors, admin } = await authenticate.admin(request);
   // [END build-admin-print-action.print-src-four-a]
+  // [START build-admin-print-action.query-params]
   const url = new URL(request.url);
   const query = url.searchParams;
   const docs = query.get("printType").split(",");
   const orderId = query.get("orderId");
-  const orderDetails = await admin
-    .graphql(
+  // [END build-admin-print-action.query-params]
+  // [START build-admin-print-action.graphQL-query]
+  const response = await admin.graphql(
       `query getOrder($orderId: ID!) {
       order(id: $orderId) {
         name,
@@ -26,11 +28,12 @@ export async function loader({ request }) {
           orderId: orderId,
         },
       }
-    )
-    .json();
-
+    );
+  const orderDetails = await response.json();
   const order = orderDetails.data.order;
-  const pages = docs.map((x) => orderPage(x, order));
+  // [END build-admin-print-action.graphQL-query]
+  // [START build-admin-print-action.print-src-four-b]
+  const pages = docs.map((docType) => orderPage(docType, order));
   const print = printHTML(pages);
   // [START build-admin-print-action.print-src-four-b]
   return cors(
@@ -73,7 +76,7 @@ function orderPage(docType, order) {
           </div>
         </div>
         <hr>
-        <p>Order total: ${price}</p>
+        <p>Order total: $${price}</p>
         <p style="margin-bottom: 0;">If you have any questions, please send an email to ${email}</p>
       </div>
     </main>`;
