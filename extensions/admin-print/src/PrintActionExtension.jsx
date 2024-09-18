@@ -30,18 +30,23 @@ function App() {
     const printTypes = []
     if (printInvoice) {
       printTypes.push("Invoice");
-    } ;
+    };
     if (printPackingSlip) {
       printTypes.push("Packing Slip");
     };
 
-    const params = new URLSearchParams({
-      printType: printTypes.join(','),
-      orderId: data.selected[0].id
-    });
+    if (printTypes.length) {
+      const params = new URLSearchParams({
+        printType: printTypes.join(','),
+        orderId: data.selected[0].id
+      });
 
-    const fullSrc = `/print?${params.toString()}`;
-    setSrc(fullSrc);
+      const fullSrc = `/print?${params.toString()}`;
+      setSrc(fullSrc);
+
+    } else {
+      setSrc(null);
+    }
   }, [data.selected, printInvoice, printPackingSlip]);
   // [END build-admin-print-action.set-src] 
 
