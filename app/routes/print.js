@@ -14,8 +14,8 @@ export async function loader({ request }) {
   const response = await admin.graphql(
       `query getOrder($orderId: ID!) {
       order(id: $orderId) {
-        name,
-        createdAt,
+        name
+        createdAt
         totalPriceSet {
           shopMoney {
             amount
@@ -29,8 +29,8 @@ export async function loader({ request }) {
         },
       }
     );
-  const orderDetails = await response.json();
-  const order = orderDetails.data.order;
+  const orderData = await response.json();
+  const order = orderData.data.order;
   // [END build-admin-print-action.graphQL-query]
   // [START build-admin-print-action.print-src-four-b]
   const pages = docs.map((docType) => orderPage(docType, order));
