@@ -11,8 +11,3 @@ module = "./src/BlockExtension.jsx"
 # The target used here must match the target used in the module file (./src/BlockExtension.jsx)
 target = "admin.product-details.block.render"
 # [END block-extension.configuration]
-
-# Valid extension targets:
-# - admin.customer-details.block.render
-# - admin.order-details.block.render
-# - admin.product-details.block.render
