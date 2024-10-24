@@ -11,21 +11,3 @@ module = "./src/ActionExtension.jsx"
 # The target used here must match the target used in the module file (./src/ActionExtension.jsx)
 target = "admin.product-details.action.render"
 # [END action-extension.configuration]
-
-# Valid extension points:
-
-# Customer index and detail pages
-# - admin.customer-index.action.render
-# - admin.customer-index.selection-action.render
-# - admin.customer-details.action.render
-# - admin.customer-segment-details.action.render
-
-# Order index and detail pages
-# - admin.order-index.action.render
-# - admin.order-index.selection-action.render
-# - admin.order-details.action.render
-
-# Product index and detail pages
-# - admin.product-index.action.render
-# - admin.product-index.selection-action.render
-# - admin.product-details.action.render
