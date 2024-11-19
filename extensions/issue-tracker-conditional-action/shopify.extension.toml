@@ -1,0 +1,16 @@
+api_version = "2024-01"
+
+[[extensions]]
+# Change the merchant-facing name of the extension in locales/en.default.json
+name = "t:name"
+handle = "issue-tracker-conditional-action"
+type = "ui_extension"
+[[extensions.targeting]]
+module = "./src/ActionExtension.jsx"
+# The target used here must match the target used in the module file (./src/ActionExtension.jsx)
+target = "admin.product-details.action.render"
+
+# [START conditional-action-extension.configuration]
+[extensions.targeting.should_render]
+module = "./src/ShouldRender.js"
+# [END conditional-action-extension.configuration]

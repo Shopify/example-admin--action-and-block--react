@@ -1,0 +1,14 @@
+{
+  "name": "issue-tracker-conditional-block",
+  "private": true,
+  "version": "1.0.0",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "react": "^18.0.0",
+    "@shopify/ui-extensions": "2024.1.x",
+    "@shopify/ui-extensions-react": "2024.1.x"
+  },
+  "devDependencies": {
+    "react-reconciler": "0.29.0"
+  }
+}
