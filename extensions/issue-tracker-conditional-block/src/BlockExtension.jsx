@@ -112,10 +112,7 @@ function App() {
       <ProgressIndicator size="large-100" />
     </InlineStack>
   ) : (
-    <AdminBlock
-      // Translate the block title with the i18n API, which uses the strings in the locale files
-      title={i18n.translate("name")}
-    >
+    <>
       <Text>Issues</Text>
       <Form id={`issues-form`} onSubmit={onSubmit} onReset={onReset}>
         {issues.length ? (
@@ -206,14 +203,22 @@ function App() {
           <>
             <Box paddingBlockEnd="large">
               <Text fontWeight="bold">No issues for this product</Text>
-            </Box>
+          </Box>
           </>
         )}
       </Form>
-    </AdminBlock>
+    </>
   );
   // [START conditional-block-extension.conditional-markup]
   // Only render the block body if there is more than one variant, otherwise, return null to collapse the block
-  return shouldRender ? blockMarkup : null;
+  return (
+    <AdminBlock
+      // Translate the block title with the i18n API, which uses the strings in the locale files
+      title={i18n.translate("name")}
+      collapsedSummary={!shouldRender ? "Not enough product variants." : null}
+    >
+      {shouldRender ? blockMarkup : null}
+    </AdminBlock>
+  );
   // [END conditional-block-extension.conditional-markup]
 }

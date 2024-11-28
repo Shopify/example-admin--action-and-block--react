@@ -36,6 +36,13 @@ export async function getIssues(productId) {
         metafield(namespace: "$app:issues", key:"issues") {
           value
         }
+        variants(first: 2) {
+          edges {
+            node {
+              id
+            }
+          }
+        }
       }
     }
   `,

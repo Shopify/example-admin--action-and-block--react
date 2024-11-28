@@ -1,14 +1,19 @@
 // [START conditional-action-extension.module]
-import { shouldRender } from "@shopify/ui-extensions/admin";
 import { getProductVariants } from "./utils";
 
-const TARGET = "admin.product-details.action.render";
+// [START conditional-action-extension.target]
+const TARGET = "admin.product-details.action.should-render";
+// [END conditional-action-extension.target]
 
-export default shouldRender(TARGET, ({ data }) => {
+// [START conditional-action-extension.register]
+export default shopify.extension(TARGET, ({ data }) => {
+  // [END conditional-action-extension.register]
+  // [START conditional-action-extension.display]
   const hasMultipleVariants = getProductVariants(data).then(
     (variants) => variants.length > 1
   );
 
   return { display: hasMultipleVariants };
+  // [END conditional-action-extension.display]
 });
 // [END conditional-action-extension.module]

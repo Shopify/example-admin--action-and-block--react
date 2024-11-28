@@ -1,0 +1,28 @@
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+
+name = "example-app"
+client_id = "b54a5209d6d95fbadbdce04b192712b0"
+application_url = "https://premier-steam-comment-cancellation.trycloudflare.com"
+embedded = true
+
+[access_scopes]
+# Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
+scopes = ""
+
+[auth]
+redirect_urls = [
+  "https://premier-steam-comment-cancellation.trycloudflare.com/auth/callback",
+  "https://premier-steam-comment-cancellation.trycloudflare.com/auth/shopify/callback",
+  "https://premier-steam-comment-cancellation.trycloudflare.com/api/auth/callback",
+  "https://premier-steam-comment-cancellation.trycloudflare.com/.shopify/graphiql/auth/callback"
+]
+
+[webhooks]
+api_version = "2024-07"
+
+[pos]
+embedded = false
+
+[build]
+automatically_update_urls_on_dev = true
+dev_store_url = "belal-tes.myshopify.com"

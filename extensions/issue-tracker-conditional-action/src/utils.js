@@ -70,6 +70,13 @@ export async function getProductVariants(data) {
     query: `query Product($id: ID!) {
       product(id: $id) {
         title
+        variants(first: 2) {
+          edges {
+            node {
+              id
+            }
+          }
+        }
       }
     }`,
     variables: {id: data.selected[0].id},
