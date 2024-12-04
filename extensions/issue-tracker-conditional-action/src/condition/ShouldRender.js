@@ -1,5 +1,5 @@
 // [START conditional-action-extension.module]
-import { getProductVariants } from "./utils";
+import { getProductVariants } from "../utils";
 
 // [START conditional-action-extension.target]
 const TARGET = "admin.product-details.action.should-render";
