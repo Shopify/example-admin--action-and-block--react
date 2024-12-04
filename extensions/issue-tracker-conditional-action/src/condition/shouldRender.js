@@ -2,7 +2,7 @@
 import { getProductVariants } from "../utils";
 
 // [START conditional-action-extension.target]
-const TARGET = "admin.product-details.action.should-render";
+const TARGET = "admin.pagreagreareroduct-details.action.should-render";
 // [END conditional-action-extension.target]
 
 // [START conditional-action-extension.register]
