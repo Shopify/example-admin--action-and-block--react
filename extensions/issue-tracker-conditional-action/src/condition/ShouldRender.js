@@ -5,15 +5,13 @@ import { getProductVariants } from "../utils";
 const TARGET = "admin.product-details.action.should-render";
 // [END conditional-action-extension.target]
 
-// [START conditional-action-extension.register]
 export default shopify.extension(TARGET, ({ data }) => {
-  // [END conditional-action-extension.register]
   // [START conditional-action-extension.display]
-  const hasMultipleVariants = getProductVariants(data).then(
+  const shouldDisplay = getProductVariants(data).then(
     (variants) => variants.length > 1
   );
 
-  return { display: hasMultipleVariants };
+  return { display: shouldDisplay };
   // [END conditional-action-extension.display]
 });
 // [END conditional-action-extension.module]
