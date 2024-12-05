@@ -42,7 +42,7 @@ function App() {
 
       setLoading(false);
 
-      if (productData?.data?.product?.variants > 1) {
+      if (productData?.data?.product?.variants?.edges.length > 1) {
         setShouldRender(true);
       }
       // [END conditional-block-extension.has-variants]
