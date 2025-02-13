@@ -1,7 +1,3 @@
-// [START conditional-action-extension.directive]
-/// <reference types="@shopify/ui-extensions/admin" />
-// [END conditional-action-extension.directive]
-
 // [START conditional-action-extension.module]
 import { getProductVariants } from "../utils";
 
