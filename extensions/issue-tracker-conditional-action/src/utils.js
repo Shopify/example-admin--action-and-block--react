@@ -92,6 +92,6 @@ export async function getProductVariants(data) {
   }
 
   const productData = await res.json();
-  return productData.data.product.variants;
+  return productData.data.product.variants.edges;
 };
 // [END conditional-action-extension.utils]
