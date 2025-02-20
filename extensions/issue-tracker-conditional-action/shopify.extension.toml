@@ -12,5 +12,5 @@ target = "admin.product-details.action.render"
 
 # [START conditional-action-extension.configuration]
 [extensions.targeting.should_render]
-module = "./src/condition/ShouldRender.js"
+module = "./src/condition/shouldRender.js"
 # [END conditional-action-extension.configuration]
